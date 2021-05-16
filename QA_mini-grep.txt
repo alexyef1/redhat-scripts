@@ -1,0 +1,15 @@
+Postive:
+./mini-grep -e PATTERN
+./mini-grep -e PATTERN [FILE...] 
+./mini-grep -q -e PATTERN [FILE...]
+./mini-grep -e PATTERN [FILE...] -q
+./mini-grep -e PATTERN [FILE, DIR, L-FILE, L-DIR]
+
+
+
+Negative
+./mini-grep
+./mini-grep -q
+./mini-grep -q -e
+./mini-grep -q -e r"[.*"
+./mini-grep -e -q PATTERN [FILE...]

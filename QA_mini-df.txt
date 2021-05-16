@@ -1,0 +1,11 @@
+Postive
+./mini-df
+./mini-df PATH
+./mini-df FILE]
+./mini-df -h PATH1 PATH2 PATH3
+./mini-df PATH -h
+./mini-df -h /*
+
+
+Negative:
+./mini-df -q [PATH...]

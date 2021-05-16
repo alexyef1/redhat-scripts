@@ -1,0 +1,88 @@
+#!/usr/bin/python3
+import sys
+import os
+import shutil
+
+HELP_ = './mini-df [-h] [PATH...]'
+
+
+class DFclass():
+    def __init__(self, h=False, inputFiles=[]):
+        self.h = h
+        self.inputFiles = inputFiles
+        self.fpList = []
+
+
+    def validate(self):
+        # validate existance of self.files
+        scriptDir = os.getcwd()
+        if len(self.inputFiles) == 0:
+            self.fpList.append(scriptDir)
+            
+        for file in self.inputFiles:
+            if os.path.isfile(file):
+                self.fpList.append(file)
+            elif os.path.isfile(os.path.join(scriptDir,file)):
+                cFile = os.path.join(scriptDir,file)
+                self.fpList.append(cFile)
+            elif os.path.isdir(file):
+                self.fpList.append(file)
+            elif os.path.islink(file):
+                self.fpList.append(file)
+            else:
+                print('File or Directory Can Not be Found: ',file)
+                print(HELP_)
+                sys.exit()
+                
+                
+    def printInputs(self):
+        print('#' * 65)
+        print('rIndex: ', str(self.r))
+        print('inputFiles: ', str(self.inputFiles))
+        print('FP-LIST: ', str(self.fpList))
+        print('#' * 65)
+
+
+    def getDiskInfo(self, item):
+        try:
+            total, used, free = shutil.disk_usage(item)
+        except:
+            total = 'Error Can Not Get Directory Info'
+            used = ''
+            free = ''
+            
+        if self.h:
+            print("{0:>14}, {1:>14}, {2:>14}, {3:<30}".format(total, free, used, item))
+        else:
+            print(total, free, used)
+        
+        
+    def run(self):
+        if self.h:
+            print("{0:>14}, {1:>14}, {2:>14}, {3:<30}".format('Total Space', 'Free Space', 'Used Space', 'Path'))
+        for item in self.fpList:
+            self.getDiskInfo(item)
+
+
+
+def main():
+    h = False
+    files = []
+    all_args = sys.argv[1:]
+    
+    if '-h' in all_args:
+        h = True
+        rIndex = all_args.index('-h')
+        all_args.pop(rIndex)
+        files = all_args
+    else:
+        files = all_args
+
+    dfDir = DFclass(h, files)
+    dfDir.validate()
+    #dfDir.printInputs()
+    dfDir.run()
+    
+
+if __name__ == "__main__":
+    main()   

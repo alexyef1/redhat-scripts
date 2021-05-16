@@ -1,0 +1,105 @@
+#!/usr/bin/python3
+import sys
+import os
+import pwd
+import time
+import datetime
+
+HELP_ = 'Usage: ./mini-ls [-r] [FILE...]'
+
+
+class lsClass():
+    def __init__(self, r=False, inputFiles=[]):
+        self.r = r
+        self.inputFiles = inputFiles
+        self.fpList = []
+
+
+    def validate(self):
+        # validate existance of self.files
+        scriptDir = os.getcwd()
+        if len(self.inputFiles) == 0:
+            self.fpList.append(scriptDir)
+            
+        for file in self.inputFiles:
+            if os.path.isfile(file):
+                self.fpList.append(file)
+            elif os.path.isfile(os.path.join(scriptDir,file)):
+                cFile = os.path.join(scriptDir,file)
+                self.fpList.append(cFile)
+            elif os.path.isdir(file):
+                self.fpList.append(file)
+            elif os.path.islink(file):
+                self.fpList.append(file)
+            else:
+                print('File or Directory Can Not be Found: ',file)
+                print(HELP_)
+                sys.exit()
+                
+                
+    def printInputs(self):
+        print('#' * 65)
+        print('rIndex: ', str(self.r))
+        print('inputFiles: ', str(self.inputFiles))
+        print('FP-LIST: ', str(self.fpList))
+        print('#' * 65)
+
+
+    def getInfo(self, item):
+        try:
+            statObj = os.stat(item)
+            mask = oct(statObj.st_mode)[-3:]
+            oName = pwd.getpwuid(statObj.st_uid).pw_name             
+            eTime = int(statObj.st_mtime)
+            mTime = time.strftime('%b %d %H:%M', time.localtime(eTime))
+        except:
+            mask = "Can Not get stats on file/directory!"
+            oName = ''
+            mTime = ''
+      
+        print(mask, oName, mTime, item)
+            
+
+    def lsFxn(self, dir):
+        subDirs = []
+        if os.path.isdir(dir):
+            for f in os.scandir(dir):
+                if f.is_dir():
+                    subDirs.append(f.path)
+                self.getInfo(f.path)  # for dirs and files
+
+            if self.r:
+                for dir in list(subDirs):
+                    sf = self.lsFxn(dir)
+                    subDirs.extend(sf)
+            
+        return subDirs
+        
+        
+    def run(self):
+        for item in self.fpList:
+            self.getInfo(item)
+            self.lsFxn(item)
+
+
+def main():
+    r = False
+    files = []
+    all_args = sys.argv[1:]
+    
+    if '-r' in all_args:
+        r = True
+        rIndex = all_args.index('-r')
+        all_args.pop(rIndex)
+        files = all_args
+    else:
+        files = all_args
+
+    lsDir = lsClass(r, files)
+    lsDir.validate()
+    #lsDir.printInputs()
+    lsDir.run()
+    
+
+if __name__ == "__main__":
+    main()   

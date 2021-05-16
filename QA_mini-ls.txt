@@ -1,0 +1,26 @@
+Postive:
+./mini-ls
+./mini-ls .
+./mini-ls ./
+
+./mini-ls -r
+./mini-ls -r .
+./mini-ls -r ./
+
+./mini-ls -r [DIR]
+./mini-ls [DIR] -r
+
+./mini-ls -r [FILE]
+./mini-ls [FILE] -r
+
+./mini-ls [DIR, FILE]
+./mini-ls -r [DIR, FILE]
+./mini-ls [DIR, FILE] -r
+
+
+
+Negative:
+./mini-ls {} 
+./mini-ls -q
+./mini-ls r
+

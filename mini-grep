@@ -1,0 +1,111 @@
+#!/usr/bin/python3
+import sys
+import re
+import os
+
+HELP = '\tUsage: ./mini_grep [-q] -e PATTERN [FILE...]'
+BADREDEX = '\tInvalid regex pattern Entered!'
+
+
+class GrepClass():
+    def __init__(self, q=False, e=False, pattern=None, inputFiles=[]):
+        self.q = q
+        self.e = e
+        self.pattern = pattern
+        self.inputFiles = inputFiles
+        self.fpList = []
+
+
+    def validate(self):
+        # Validate e variable
+        if self.e is False:
+            print(HELP)
+            sys.exit()
+        
+        if self.pattern:
+            try:
+                re.compile(self.pattern)
+            except re.error:
+                print(BADREDEX)
+                sys.exit()
+        else:
+            print(HELP)
+            sys.exit()
+
+        # validate existance of self.files
+        if len(self.inputFiles) == 0:
+            inputStr = (input("Please enter a string: "))    
+            self.inputFiles = inputStr.split()
+            
+        scriptDir = os.getcwd()
+        for file in self.inputFiles:
+            # check to see if file is in local directory
+            if os.path.isfile(file) and os.path.basename(file) != file:
+                self.fpList.append(file)
+            elif os.path.isfile(os.path.join(scriptDir,file)):
+                # if file in current dir
+                cFile = os.path.join(scriptDir,file)
+                self.fpList.append(cFile)
+                #print('\tCDIR: ',cFile )
+            else:
+                print('File Not Found: ',file)
+                print(HELP)
+                sys.exit()
+                
+                
+    def printInputs(self):
+        print('#' * 65)
+        print('qIndex: ', str(self.q))
+        print('eIndex: ', str(self.e))
+        print('pattern: ', str(self.pattern))
+        print('inputFiles: ', str(self.inputFiles))
+        print('FP-LIST: ', str(self.fpList))
+        print('#' * 65)
+
+
+    def run(self):
+        mPattern = re.compile(self.pattern)
+        for runFile in self.fpList:
+            bName = os.path.basename(runFile)
+            with open(runFile) as fh:
+                fLines = fh.readlines()
+            
+            for i_ in range(len(fLines)):
+                sStr = fLines[i_]
+                if mPattern.search(fLines[i_]):
+                    line = fLines[i_].rstrip('\r\n')
+                    if self.q:
+                        print(''.join([bName, ':', line]))
+                    else:
+                        print(''.join([bName, ":", str(i_), ':', line]))
+
+
+def main():
+    q = False
+    e = False
+    pattern = None
+    files = []
+    all_args = sys.argv[1:]
+    
+    if '-e' in all_args:
+        e = True
+        eIndex = all_args.index('-e')
+        try:
+            pattern = all_args.pop(eIndex + 1)
+        except IndexError:
+            print(HELP)
+            sys.exit()
+        all_args.pop(eIndex)
+        
+    if '-q' in all_args:
+        q = True
+        all_args.pop(all_args.index('-q'))
+        
+    grepStr = GrepClass(q, e, pattern, all_args)
+    #grepStr.printInputs()
+    grepStr.validate()
+    grepStr.run()
+    
+
+if __name__ == "__main__":
+    main()   
