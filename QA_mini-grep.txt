@@ -1,18 +1,23 @@
 Patterns:
 	patterns without qoutes are treated as raw strings
 	patterns with qoutes interpret special chars
+		-  Valdate that all special chars work in search strings
+			- ., ^, $, *, +, *?, +?, ??, {m}, {m, n}, {m, n}?, \, [], |, (...), (?...), \A, \b, ...
+
 
 Permissions:
 	Files with Read permissions should work
-	Files in Dirs that have no execute permissions should fail 
-		gracefully
+	Files in subDirs 
+		grep should work if subdir is execute and read and file has read permission
+		grep should not work if subdir missing exe or read permission
+
 
 Postive:
 ./mini-grep -e PATTERN
 ./mini-grep -e PATTERN [FILE...] 
 ./mini-grep -q -e PATTERN [FILE...]
 ./mini-grep -e PATTERN [FILE...] -q
-./mini-grep -e PATTERN [FILE, L-FILE, L-DIR/FILE, Dir/L-File]
+./mini-grep -e PATTERN [FILE, L-FILE]
 
 
 
@@ -22,3 +27,5 @@ Negative
 ./mini-grep -q -e
 ./mini-grep -q -e r"[.*"
 ./mini-grep -e -q PATTERN [FILE...]
+./mini-grep -e PATTERN [DIR]
+./mini-grep -e PATTERN [L-DIR]
