@@ -3,7 +3,6 @@ import sys
 import os
 import pwd
 import time
-import datetime
 
 HELP_ = 'Usage: ./mini-ls [-r] [FILE...]'
 
@@ -53,7 +52,7 @@ class lsClass():
             eTime = int(statObj.st_mtime)
             mTime = time.strftime('%b %d %H:%M', time.localtime(eTime))
         except:
-            mask = "Unk"
+            mask = 'Unk'
             oName = ''
             mTime = ''
       
@@ -103,5 +102,5 @@ def main():
     lsDir.run()
     
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()   

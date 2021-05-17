@@ -34,7 +34,7 @@ class GrepClass():
 
         # validate existance of self.files
         if len(self.inputFiles) == 0:
-            inputStr = (input("Please enter a string: "))    
+            inputStr = (input('Please enter a string: '))    
             self.inputFiles = inputStr.split()
             
         scriptDir = os.getcwd()
@@ -107,5 +107,5 @@ def main():
     grepStr.run()
     
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()   

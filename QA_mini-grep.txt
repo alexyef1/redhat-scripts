@@ -1,9 +1,18 @@
+Patterns:
+	patterns without qoutes are treated as raw strings
+	patterns with qoutes interpret special chars
+
+Permissions:
+	Files with Read permissions should work
+	Files in Dirs that have no execute permissions should fail 
+		gracefully
+
 Postive:
 ./mini-grep -e PATTERN
 ./mini-grep -e PATTERN [FILE...] 
 ./mini-grep -q -e PATTERN [FILE...]
 ./mini-grep -e PATTERN [FILE...] -q
-./mini-grep -e PATTERN [FILE, DIR, L-FILE, L-DIR]
+./mini-grep -e PATTERN [FILE, L-FILE, L-DIR/FILE, Dir/L-File]
 
 
 

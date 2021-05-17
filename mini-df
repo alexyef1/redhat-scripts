@@ -47,7 +47,7 @@ class DFclass():
         try:
             total, used, free = shutil.disk_usage(item)
         except:
-            total = 'Error Can Not Get Directory Info'
+            total = 'Not Get Directory Info'
             used = ''
             free = ''
             
@@ -59,7 +59,8 @@ class DFclass():
         
     def run(self):
         if self.h:
-            print("{0:>14}, {1:>14}, {2:>14}, {3:<30}".format('Total Space', 'Free Space', 'Used Space', 'Path'))
+            print('{0:>14}, {1:>14}, {2:>14}, {3:<30}'
+                .format('Total Space', 'Free Space', 'Used Space', 'Path'))
         for item in self.fpList:
             self.getDiskInfo(item)
 
@@ -84,5 +85,5 @@ def main():
     dfDir.run()
     
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()   
