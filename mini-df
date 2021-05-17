@@ -52,7 +52,7 @@ class DFclass():
             free = ''
             
         if self.h:
-            print("{0:>14}, {1:>14}, {2:>14}, {3:<30}".format(total, free, used, item))
+            print('{0:>14}, {1:>14}, {2:>14}, {3:<30}'.format(total, free, used, item))
         else:
             print(total, free, used)
         

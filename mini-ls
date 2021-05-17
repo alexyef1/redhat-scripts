@@ -61,7 +61,6 @@ class lsClass():
 
     def lsFxn(self, dir):
         subDirs = []
-            
         if os.access(dir, os.R_OK) and os.access(dir, os.X_OK):
             for f in os.scandir(dir):
                 if f.is_dir():
