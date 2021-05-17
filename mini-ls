@@ -53,16 +53,17 @@ class lsClass():
             eTime = int(statObj.st_mtime)
             mTime = time.strftime('%b %d %H:%M', time.localtime(eTime))
         except:
-            mask = "Can Not get stats on file/directory!"
+            mask = "Unk"
             oName = ''
             mTime = ''
       
-        print(mask, oName, mTime, item)
+        print('{0:<3} {1:<4} {2:<12} {3:<30}'.format(mask, oName, mTime, item))
             
 
     def lsFxn(self, dir):
         subDirs = []
-        if os.path.isdir(dir):
+            
+        if os.access(dir, os.R_OK) and os.access(dir, os.X_OK):
             for f in os.scandir(dir):
                 if f.is_dir():
                     subDirs.append(f.path)
@@ -79,7 +80,8 @@ class lsClass():
     def run(self):
         for item in self.fpList:
             self.getInfo(item)
-            self.lsFxn(item)
+            if os.path.isdir(item):
+                self.lsFxn(item)
 
 
 def main():
