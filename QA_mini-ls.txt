@@ -5,20 +5,15 @@ Notes:
 	but os.stat does not. 
 
 
-
 Permissions:
 	Test directories and files:
 		with full permissions
 		Read and Execute permissions
 		Read permissions
 		
-Patterns:
-	patterns with no qoutes (Raw strings)
-	patterns in qoutes interpret special chars
-
 
 Recursive Tests:
-	On recursive tests, test with 3 levels of recursion
+	On recursive tests should have 3 levels of dirs
 	
 
 Postive Tests:
